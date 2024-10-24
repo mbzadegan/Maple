@@ -1,0 +1,24 @@
+with(LinearAlgebra):
+with(CodeTools[Usage]):
+with(CUDA):
+
+# Define matrix size
+n := 500:  # You can change this size to a larger value
+
+# Generate two random matrices of size n x n
+A := RandomMatrix(n, n, generator = rand(-10..10)):
+B := RandomMatrix(n, n, generator = rand(-10..10)):
+
+# Multiply matrices using CPU and time the process
+cpu_time := Usage(C := Multiply(A, B), output='time'):
+
+# Multiply matrices using GPU and time the process
+gpu_time := Usage(C_gpu := CUDA:-Multiply(A, B), output='time'):
+
+# Output the results
+printf("CPU time: %.6f seconds\n", cpu_time[1]): 
+printf("GPU time: %.6f seconds\n", gpu_time[1]): 
+
+# Optionally, verify that both results are the same
+are_equal := Norm(C - C_gpu, 'infinity') < 1e-6:
+printf("Results are equal: %s\n", are_equal):
