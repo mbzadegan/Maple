@@ -1,0 +1,33 @@
+# Define the number of random numbers to generate
+N := 1000:
+
+# Generate N random numbers between 0 and 1
+random_numbers := [seq(RandomTools[Generate](float(range = 0 .. 1)), i = 1 .. N)]:
+
+# Calculate the mean of the random numbers
+mean := evalf(add(random_numbers[i], i = 1 .. N) / N);
+
+# Calculate the variance of the random numbers
+variance := evalf(add((random_numbers[i] - mean)^2, i = 1 .. N) / (N - 1));
+
+# Calculate the standard deviation
+std_dev := sqrt(variance);
+
+# Calculate autocorrelation at a specified lag
+lag := 1:
+autocorrelation := evalf(add((random_numbers[i] - mean) * (random_numbers[i + lag] - mean), i = 1 .. N - lag) / ((N - lag) * variance));
+
+# Display the results
+printf("Statistics for the generated random numbers:\n");
+printf("Mean          = %.4f\n", mean);
+printf("Variance      = %.4f\n", variance);
+printf("Std. Dev.     = %.4f\n", std_dev);
+printf("Autocorrelation at lag %d = %.4f\n", lag, autocorrelation);
+
+# Assess the quality of the random numbers
+# For uniform distribution in [0,1], expected mean = 0.5, variance ≈ 1/12 ≈ 0.0833
+if abs(mean - 0.5) < 0.05 and abs(variance - 1/12) < 0.05 then
+    printf("Quality assessment: The random numbers seem to be of good quality.\n");
+else
+    printf("Quality assessment: The random numbers may be biased.\n");
+end if;
