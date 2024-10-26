@@ -1,0 +1,35 @@
+# Define a function to generate the Fibonacci sequence
+Fibonacci := proc(n)
+    if n = 0 then
+        return 0;
+    elif n = 1 then
+        return 1;
+    else
+        return Fibonacci(n - 1) + Fibonacci(n - 2);
+    end if;
+end proc:
+
+# Define a function to find prime Fibonacci numbers up to a certain count
+findPrimeFibonacci := proc(count)
+    local i, fib, primeFibs;
+
+    # Initialize an empty list to store prime Fibonacci numbers
+    primeFibs := [];
+
+    # Loop to check Fibonacci numbers for primality
+    for i from 1 while nops(primeFibs) < count do
+        fib := Fibonacci(i);
+
+        # Check if the Fibonacci number is prime
+        if isprime(fib) then
+            primeFibs := [op(primeFibs), fib];
+        end if;
+    end do;
+
+    # Return the list of prime Fibonacci numbers found
+    return primeFibs;
+end proc:
+
+# Example: Find the first 10 prime Fibonacci numbers
+primeFibs := findPrimeFibonacci(10);
+print("Prime Fibonacci numbers:", primeFibs);
