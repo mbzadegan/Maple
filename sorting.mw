@@ -1,0 +1,59 @@
+# Load necessary packages
+with(RandomTools):
+with(CodeTools[Profiling]):
+
+# Function to generate N random numbers
+generateRandomNumbers := proc(N)
+    local i;
+    [seq(Generate(float(range = 0 .. 100)), i = 1 .. N)];
+end proc:
+
+# Bubble Sort implementation
+bubbleSort := proc(A)
+    local i, j, n, temp;
+    n := nops(A);
+    for i from 1 to n - 1 do
+        for j from 1 to n - i do
+            if A[j] > A[j + 1] then
+                temp := A[j];
+                A[j] := A[j + 1];
+                A[j + 1] := temp;
+            end if;
+        end do;
+    end do;
+    A;
+end proc:
+
+# Quick Sort implementation
+quickSort := proc(A)
+    if nops(A) <= 1 then
+        return A;
+    else
+        local pivot, left, right;
+        pivot := A[1];
+        left := [seq(x, x in A[2 .. -1] | x <= pivot)];
+        right := [seq(x, x in A[2 .. -1] | x > pivot)];
+        return quickSort(left)[], pivot, quickSort(right)[];  # Concatenate sorted arrays
+    end if;
+end proc:
+
+# Measure processing times for sorting algorithms
+measureSortingTimes := proc(N)
+    local numbers, time_bubble, time_quick;
+
+    # Generate random numbers
+    numbers := generateRandomNumbers(N);
+
+    # Measure time for Bubble Sort
+    time_bubble := CodeTools[Usage](bubbleSort(copy(numbers)), output = time);
+
+    # Measure time for Quick Sort
+    time_quick := CodeTools[Usage](quickSort(copy(numbers)), output = time);
+
+    # Display processing times
+    print(sprintf("Processing time for Bubble Sort: %.4f seconds", time_bubble));
+    print(sprintf("Processing time for Quick Sort: %.4f seconds", time_quick));
+end proc:
+
+# Example: Sort and measure processing time for 1000 random numbers
+measureSortingTimes(1000);

@@ -1,0 +1,35 @@
+# Load the Statistics package for fitting functions
+with(Statistics):
+
+# Define a procedure to find the best-fit curve for a 2xn matrix
+findBestFitCurve := proc(matrix::Matrix, fitType::string)
+    local data, xVals, yVals, curve;
+
+    # Extract x and y values from the 2xN matrix
+    xVals := [seq(matrix[1, i], i = 1 .. RowDimension(matrix))];
+    yVals := [seq(matrix[2, i], i = 1 .. RowDimension(matrix))];
+    data := zip((x, y) -> [x, y], xVals, yVals);
+
+    # Determine the type of best-fit curve based on user input
+    if fitType = "linear" then
+        curve := LinearFit([x, 1], data, x);
+    elif fitType = "quadratic" then
+        curve := NonlinearFit(a*x^2 + b*x + c, data, x);
+    elif fitType = "exponential" then
+        curve := NonlinearFit(a*exp(b*x), data, x);
+    elif fitType = "power" then
+        curve := NonlinearFit(a*x^b, data, x);
+    else
+        error "Unsupported fit type. Use 'linear', 'quadratic', 'exponential', or 'power'.";
+    end if;
+
+    # Display the resulting best-fit curve equation
+    print("The best-fit curve equation for a", fitType, "fit is:");
+    return curve;
+end proc:
+
+# Example: Define a 2xN matrix and find a best-fit curve
+points := Matrix([[1, 2, 3, 4, 5], [2.3, 2.9, 3.8, 4.2, 5.1]]):
+fitType := "linear";  # Change this to "quadratic", "exponential", or "power" as needed
+bestFitEquation := findBestFitCurve(points, fitType);
+print(bestFitEquation);
