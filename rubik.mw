@@ -1,0 +1,69 @@
+# Define a simple 2x2x2 Rubik's Cube with color labels on each face
+cube := ["W", "W", "W", "W", "R", "R", "R", "R", "G", "G", "G", "G", "B", "B", "B", "B", "O", "O", "O", "O", "Y", "Y", "Y", "Y"];
+
+# Helper function to print the cube state
+printCube := proc(cube)
+    printf("Cube state: %s\n", cube);
+end proc:
+
+# Define basic rotations (simplified for 2x2x2)
+rotateFront := proc(cube)
+    local newCube;
+    # Front face rotation
+    newCube := copy(cube);
+    newCube[3] := cube[4];
+    newCube[4] := cube[8];
+    newCube[8] := cube[7];
+    newCube[7] := cube[3];
+    # Return the new cube state after rotation
+    return newCube;
+end proc:
+
+rotateRight := proc(cube)
+    local newCube;
+    # Right face rotation
+    newCube := copy(cube);
+    newCube[5] := cube[6];
+    newCube[6] := cube[10];
+    newCube[10] := cube[9];
+    newCube[9] := cube[5];
+    # Return the new cube state after rotation
+    return newCube;
+end proc:
+
+rotateUp := proc(cube)
+    local newCube;
+    # Top face rotation
+    newCube := copy(cube);
+    newCube[1] := cube[2];
+    newCube[2] := cube[6];
+    newCube[6] := cube[5];
+    newCube[5] := cube[1];
+    # Return the new cube state after rotation
+    return newCube;
+end proc:
+
+# Check if the cube is solved
+isSolved := proc(cube)
+    local i, faceColors;
+    # Cube is solved if all faces are of the same color
+    for i from 1 to 24 by 4 do
+        faceColors := {seq(cube[i + j], j = 0 .. 3)};
+        if nops(faceColors) > 1 then
+            return false;
+        end if;
+    end do;
+    return true;
+end proc:
+
+# Example: Apply some moves and check the cube state
+cube := rotateFront(cube);
+cube := rotateRight(cube);
+cube := rotateUp(cube);
+
+printCube(cube);
+if isSolved(cube) then
+    print("The cube is solved.");
+else
+    print("The cube is not solved.");
+end if;
