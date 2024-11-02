@@ -1,0 +1,23 @@
+# Load RandomTools for generating random values
+with(RandomTools):
+
+# Define the number of coin flips
+n := 100:  # Replace 100 with the desired number of flips
+
+# Initialize counters for heads (H) and tails (T)
+heads := 0:
+tails := 0:
+
+# Simulate n coin flips and count the occurrences of H and T
+for i from 1 to n do
+    if Generate(integer(range = 0 .. 1)) = 0 then
+        heads := heads + 1:
+    else
+        tails := tails + 1:
+    end if:
+end do:
+
+# Display the results
+printf("Total coin flips: %d\n", n);
+printf("Heads (H): %d\n", heads);
+printf("Tails (T): %d\n", tails);
