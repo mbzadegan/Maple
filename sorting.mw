@@ -25,6 +25,7 @@ bubbleSort := proc(A)
 end proc:
 
 # Quick Sort implementation
+
 quickSort := proc(A)
     if nops(A) <= 1 then
         return A;
