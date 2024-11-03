@@ -1,0 +1,26 @@
+# Function to generate Pascal's Triangle up to n rows
+PascalTriangle := proc(n)
+    local triangle, i, j;
+
+    # Initialize an empty list to store the rows of the triangle
+    triangle := [];
+
+    # Loop through each row from 0 to n-1
+    for i from 0 to n-1 do
+        # Generate each element in the row using the binomial coefficient
+        triangle := [op(triangle), [seq(binomial(i, j), j = 0..i)]];
+    end do;
+
+    # Display each row of Pascal's Triangle
+    for i from 1 to n do
+        print(triangle[i]);
+    end do;
+
+    return triangle;  # Return the triangle as a list of lists
+end proc:
+
+# Define the number of rows
+n := 5;  # Change n to any positive integer
+
+# Generate and display Pascal's Triangle with n rows
+PascalTriangle(n);
