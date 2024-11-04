@@ -1,0 +1,37 @@
+# Blum Blum Shub RNG in Maple
+BlumBlumShub := proc(seed, p, q, num_bits)
+    local m, x, i, random_bits, random_bit;
+    
+    # Compute the modulus as the product of the two primes
+    m := p * q;
+    
+    # Initialize x with the seed squared mod m
+    x := (seed^2) mod m;
+    
+    # List to store the generated random bits
+    random_bits := [];
+
+    # Generate the sequence of random bits
+    for i from 1 to num_bits do
+        # Square x and take mod m
+        x := (x^2) mod m;
+        
+        # Extract the least significant bit (0 or 1)
+        random_bit := x mod 2;
+        
+        # Append the random bit to the list
+        random_bits := [op(random_bits), random_bit];
+    end do;
+
+    return random_bits;
+end proc;
+
+# Example usage
+p := 499;            # First large prime
+q := 547;            # Second large prime
+seed := 12345;       # Seed value (must be coprime to m)
+num_bits := 10;      # Number of random bits to generate
+
+# Generate and display random bits
+random_bits := BlumBlumShub(seed, p, q, num_bits);
+printf("Generated random bits: %s\n", random_bits);
