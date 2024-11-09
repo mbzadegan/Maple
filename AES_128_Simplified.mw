@@ -1,0 +1,85 @@
+with(RandomTools):
+
+# Define the S-Box (Substitution Box) for AES
+SBox := [
+    0x63,0x7c,0x77,0x7b,0xf2,0x6b,0x6f,0xc5,0x30,0x01,0x67,0x2b,0xfe,0xd7,0xab,0x76,
+    0xca,0x82,0xc9,0x7d,0xfa,0x59,0x47,0xf0,0xad,0xd4,0xa2,0xaf,0x9c,0xa4,0x72,0xc0,
+    # (Fill the rest of the 256-element SBox array here, truncated for brevity)
+];
+
+# AES round functions (simplified for Maple implementation)
+SubBytes := proc(state)
+    local i;
+    for i to nops(state) do
+        state[i] := SBox[state[i] + 1]; # Apply S-Box substitution
+    end do;
+    return state;
+end proc:
+
+ShiftRows := proc(state)
+    # Simplified row-shifting operation for 128-bit block
+    return [state[1], state[6], state[11], state[16], state[5], state[10], state[15], state[4], state[9], state[14], state[3], state[8], state[13], state[2], state[7], state[12]];
+end proc:
+
+MixColumns := proc(state)
+    # Simplified MixColumns (For brevity; full matrix multiplication needed for actual AES)
+    return state; # No real operation here for simplicity
+end proc:
+
+AddRoundKey := proc(state, key)
+    local i;
+    for i to nops(state) do
+        state[i] := state[i] xor key[i];
+    end do;
+    return state;
+end proc:
+
+# AES Encryption (Single Block)
+AES_Encrypt := proc(plaintext::Vector, key::Vector)
+    local roundKeys, state, i;
+    
+    # Initial round key addition
+    state := AddRoundKey([op(plaintext)], [op(key)]);
+    
+    # Main rounds
+    for i from 1 to 9 do
+        state := SubBytes(state);
+        state := ShiftRows(state);
+        state := MixColumns(state);
+        state := AddRoundKey(state, key); # Simplified key scheduling
+    end do;
+    
+    # Final round
+    state := SubBytes(state);
+    state := ShiftRows(state);
+    state := AddRoundKey(state, key);
+    
+    return state;
+end proc:
+
+# Generate a pseudo-random number with AES in CTR mode
+AES_RNG := proc(seed::Vector, key::Vector, count::integer)
+    local counter, output, i, rand_number;
+
+    # Initialize counter
+    counter := seed;
+    rand_number := [];
+
+    for i from 1 to count do
+        output := AES_Encrypt(counter, key); # Encrypt the counter
+        rand_number := rand_number, output[1]; # Collect LSB from output as random bit
+
+        # Increment counter (simple 128-bit increment)
+        counter[16] := counter[16] + 1;
+    end do;
+
+    return rand_number;
+end proc:
+
+# Usage: Define 128-bit key and seed
+key := Vector([0x2b,0x7e,0x15,0x16,0x28,0xae,0xd2,0xa6,0xab,0xf7,0xcf,0x4f,0x3c,0x76,0x2e,0x31]);
+seed := Vector([0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x01]);
+
+# Generate random bits
+rand_bits := AES_RNG(seed, key, 8);  # Generate 8 random numbers
+rand_bits;
