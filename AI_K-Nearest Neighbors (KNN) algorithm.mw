@@ -1,0 +1,40 @@
+# Define the number of neighbors (k) to consider
+k := 3:
+
+# Define the training data as a list of lists with the format: [x, y, label]
+# Here, x and y are the coordinates, and label is either 0 or 1
+trainingData := [[1, 2, 0], [2, 3, 0], [3, 3, 1], [5, 1, 1], [6, 5, 0], [7, 3, 1]]:
+
+# Define the test point (the point to classify)
+testPoint := [4, 3]:
+
+# Function to calculate Euclidean distance between two points
+distance := (p1, p2) -> sqrt((p1[1] - p2[1])^2 + (p1[2] - p2[2])^2):
+
+# Calculate distances from test point to all training data points
+distances := map(p -> [distance(p, testPoint), p[3]], trainingData):
+
+# Sort distances in ascending order and select the k nearest neighbors
+sortedDistances := sort(distances, (d1, d2) -> d1[1] < d2[1]):
+nearestNeighbors := [seq(sortedDistances[i], i=1..k)]:
+
+# Count the labels of the nearest neighbors
+labelCounts := [0, 0]: # Initialize counters for labels 0 and 1
+
+for i in nearestNeighbors do
+    if i[2] = 0 then
+        labelCounts[1] := labelCounts[1] + 1:
+    else
+        labelCounts[2] := labelCounts[2] + 1:
+    end if:
+end do:
+
+# Determine the predicted class by majority voting
+if labelCounts[1] > labelCounts[2] then
+    predictedClass := 0:
+else
+    predictedClass := 1:
+end if:
+
+# Output the result
+printf("Predicted class for test point (%d, %d): %d\n", testPoint[1], testPoint[2], predictedClass);
