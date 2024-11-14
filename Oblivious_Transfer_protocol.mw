@@ -1,0 +1,34 @@
+# Oblivious Transfer Simulation in Maple
+with(RandomTools):
+
+# Initialize sender's two messages (M0 and M1)
+M0 := "Secret Message 0":
+M1 := "Secret Message 1":
+
+# Sender generates a random key (K) and two encrypted messages
+K := Generate(integer(range = 1..100)):  # Generate random key
+Enc_M0 := M0 +~ K:  # Encrypt M0 with key K
+Enc_M1 := M1 +~ K:  # Encrypt M1 with key K
+
+# Receiver chooses which message to decrypt (0 or 1)
+Choice := 0:  # Receiver chooses 0 for M0, or 1 for M1
+
+# Receiver generates a secret key K' based on their choice
+if Choice = 0 then
+    K_Receiver := K:
+else
+    K_Receiver := Generate(integer(range = 1..100)):
+end if:
+
+# Decrypt the chosen message
+if Choice = 0 then
+    Received_Message := Enc_M0 -~ K_Receiver:
+else
+    Received_Message := Enc_M1 -~ K_Receiver:
+end if:
+
+# Display results
+printf("Sender's Messages: M0 = %s, M1 = %s\n", M0, M1);
+printf("Encrypted Messages: Enc_M0 = %s, Enc_M1 = %s\n", Enc_M0, Enc_M1);
+printf("Receiver's Choice: %d\n", Choice);
+printf("Receiver's Retrieved Message: %s\n", Received_Message);
