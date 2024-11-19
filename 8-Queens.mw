@@ -1,0 +1,85 @@
+restart:
+
+# Function to check if a position is safe for placing a queen
+isSafe := proc(board, row, col)
+    local i, j;
+
+    # Check the same column for another queen
+    for i from 1 to row-1 do
+        if board[i] = col then
+            return false;
+        end if;
+    end do;
+
+    # Check upper-left diagonal
+    for i from 1 to row-1 do
+        if (board[i] = col - (row - i)) then
+            return false;
+        end if;
+    end do;
+
+    # Check upper-right diagonal
+    for i from 1 to row-1 do
+        if (board[i] = col + (row - i)) then
+            return false;
+        end if;
+    end do;
+
+    return true;
+end proc:
+
+# Function to solve the N-Queens problem using backtracking
+solveNQueens := proc(N)
+    local board, row, col, solutions, addSolution;
+
+    board := Array(1..N, 0); # Array to store queen positions
+    solutions := []; # List to store all valid solutions
+
+    # Helper function to add a solution to the list
+    addSolution := proc(board)
+        local i, solution;
+        solution := [];
+        for i from 1 to N do
+            solution := [op(solution), board[i]];
+        end do;
+        solutions := [op(solutions), solution];
+    end proc;
+
+    # Backtracking algorithm
+    row := 1;
+    while row > 0 do
+        board[row] := board[row] + 1;
+        if board[row] > N then
+            board[row] := 0;
+            row := row - 1;
+        elif isSafe(board, row, board[row]) then
+            if row = N then
+                addSolution(board);
+            else
+                row := row + 1;
+            end if;
+        end if;
+    end do;
+
+    return solutions;
+end proc:
+
+# Solve the 8-Queens problem
+solutions := solveNQueens(8):
+
+# Display the solutions
+for sol in solutions do
+    print(sol);
+    # Display the chessboard
+    for i from 1 to 8 do
+        for j from 1 to 8 do
+            if sol[i] = j then
+                printf(" Q ");
+            else
+                printf(" . ");
+            end if;
+        end do;
+        printf("\n");
+    end do;
+    printf("\n");
+end do;
