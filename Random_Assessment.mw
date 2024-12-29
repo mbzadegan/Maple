@@ -1,5 +1,5 @@
 # Define the number of random numbers to generate
-N := 1000:
+N := 10000:
 
 # Generate N random numbers between 0 and 1
 random_numbers := [seq(RandomTools[Generate](float(range = 0 .. 1)), i = 1 .. N)]:
