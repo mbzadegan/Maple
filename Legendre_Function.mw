@@ -1,0 +1,35 @@
+# Legendre Polynomial Plot:
+# Computes 𝑃𝑛(x) for 𝑛=0,1,2,3 and then Uses plot() for 2D visualization.
+# 3D Potential Visualization: Uses 𝑃2(cos𝜃) in the function 𝑉(𝑟,𝜃).
+# Plots in spherical coordinates to resemble a real-world electrostatic potential.
+
+
+
+restart;
+with(plots):
+
+# Define Legendre Polynomials P_n(x) for n = 0,1,2,3
+P0 := LegendreP(0, x):
+P1 := LegendreP(1, x):
+P2 := LegendreP(2, x):
+P3 := LegendreP(3, x):
+
+# Plot the first few Legendre polynomials
+LegendrePlot := plot([P0, P1, P2, P3], x = -1 .. 1, 
+                      color = [red, blue, green, purple], 
+                      thickness = 2, 
+                      legend = ["P_0(x)", "P_1(x)", "P_2(x)", "P_3(x)"], 
+                      title = "Legendre Polynomials");
+
+# Define a 3D potential function using P_2(cos(theta))
+V := (r, theta) -> r^2 * LegendreP(2, cos(theta));
+
+# Create a 3D surface plot for V(r, theta)
+PotentialPlot := plot3d(V(r, theta), r = 0 .. 2, theta = 0 .. Pi, 
+                        coords = spherical, grid = [50, 50], 
+                        title = "Electric Potential in Spherical Capacitor", 
+                        shading = zhue, color = [blue, cyan]);
+
+# Display the plots
+display(LegendrePlot);
+display(PotentialPlot);
