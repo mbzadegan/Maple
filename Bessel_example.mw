@@ -1,0 +1,18 @@
+# Define variables
+restart;
+with(plots):
+
+# Define Bessel function J_0(x)
+J0 := BesselJ(0, x):
+
+# Plot J_0(x) for x in [0, 10]
+BesselPlot := plot(J0, x = 0 .. 10, color = blue, thickness = 2, title = "Bessel Function J_0(x)");
+
+# Create a 3D plot for a vibrating circular membrane
+membrane := plot3d(BesselJ(0, sqrt(x^2 + y^2)), x = -10 .. 10, y = -10 .. 10, 
+                   axes = boxed, grid = [50, 50], title = "Vibration of Circular Membrane", 
+                   shading = zhue, color = [blue, cyan]);
+
+# Display the plots
+display(BesselPlot);
+display(membrane);
