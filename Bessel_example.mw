@@ -1,3 +1,7 @@
+# A 2D plot of 𝐽0(𝑥) showing oscillatory decay.
+# A 3D plot representing the vibration of a circular membrane.
+
+
 # Define variables
 restart;
 with(plots):
