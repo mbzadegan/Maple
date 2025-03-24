@@ -19,7 +19,7 @@ HadamardMatrix := proc(n)
 end proc:
 
 # Define the size of the Hadamard matrix
-n := 8:  # Replace 8 with any power of 2, such as 2, 4, 16, etc.
+n := 8:  # Replace 8 with any power of 2, such as 2, 4, 16, 32, etc.
 
 # Generate the Hadamard matrix
 H := HadamardMatrix(n);
