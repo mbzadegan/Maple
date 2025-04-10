@@ -2,7 +2,7 @@
 # A 3D plot representing the vibration of a circular membrane(Drum).
 
 
-# Define variables
+# Define variables.
 restart;
 with(plots):
 
