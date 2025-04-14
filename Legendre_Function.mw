@@ -1,4 +1,4 @@
-# Legendre Polynomial Plot:
+# Legendre Polynomial Plot
 # Computes 𝑃𝑛(x) for 𝑛=0,1,2,3 and then Uses plot() for 2D visualization.
 # 3D Potential Visualization: Uses 𝑃2(cos𝜃) in the function 𝑉(𝑟,𝜃).
 # Plots in spherical coordinates to resemble a real-world electrostatic potential.
