@@ -11,7 +11,7 @@ SBox := [
 SubBytes := proc(state)
     local i;
     for i to nops(state) do
-        state[i] := SBox[state[i] + 1]; # Apply S-Box substitution
+        state[i] := SBox[state[i] + 1]; # Apply S-Box substitution.
     end do;
     return state;
 end proc:
