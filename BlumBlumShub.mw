@@ -1,4 +1,5 @@
 # Blum Blum Shub RNG in Maple
+
 BlumBlumShub := proc(seed, p, q, num_bits)
     local m, x, i, random_bits, random_bit;
     
