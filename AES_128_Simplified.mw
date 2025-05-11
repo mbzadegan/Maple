@@ -57,7 +57,7 @@ AES_Encrypt := proc(plaintext::Vector, key::Vector)
     return state;
 end proc:
 
-# Generate a pseudo-random number with AES in CTR mode
+# Generate pseudo-random number with AES in CTR mode
 AES_RNG := proc(seed::Vector, key::Vector, count::integer)
     local counter, output, i, rand_number;
 
